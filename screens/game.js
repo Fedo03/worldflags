@@ -15,11 +15,12 @@ function Game(){
     var [count, setCount] = useState([...countries[1]]);
 
     var [answ, setAnsw] = useState([])
-   console.log(count[0]);
+   console.log(console.log);
     
+  
   useEffect(()=> {
-    var oldarr = answ
-
+    var oldarr = []
+    setAnsw([])
     for(var i = 0 ; i < count.length; i++){
        
        oldarr.push("")
@@ -28,19 +29,26 @@ function Game(){
 
     }
 
-    console.log(answ)
-
   },[])
 
 
-  const exchange = (index, type) => {
+useEffect(() => {
+    console.log(answ)
+},[answ])
+
+
+  function exchange (index, type) {
+    
     if (type == "letters") {
    var oldarr = answ 
+    var oldcount = count
+   
        oldarr[index] = count[index]
        setAnsw(oldarr)
+       oldcount.splice(index,1)
+       setCount(oldcount)
 
     }
-
 
 
   }
@@ -49,16 +57,23 @@ function Game(){
     function Letter(props){
         return(
             <TouchableOpacity onPress={props.onClick}>
-            <View>
-                <Text>  
+            <View style={{backgroundColor:"blue",
+               width : 10,
+                height: 20,
+                margin: 4}}>
+                <Text style={{color: "black"}}>  
                     {props.letter}
                 </Text>
+                
             </View>
             </TouchableOpacity>
         )
     }
 
- 
+
+    console.log(answ)
+
+  
     return(
         <SafeAreaView>
             <View>
@@ -74,10 +89,12 @@ function Game(){
 
             <View style={{flexDirection : "row"}} >
           {
-            count.map( (item, index) => {
+            answ.map( (item, index) => {
+              console.log(index)
        return  (
-        <View >
-            <Letter />
+            <View >
+            <Letter letter={item} />
+            
             </View> 
               )
            }) 
@@ -85,13 +102,16 @@ function Game(){
          }
           </View>
 
+
+
             <View style={{flexDirection : "row"}}>
           {
             count.map( (item, index) => {
        return  (
         <View>
             <Letter letter={item}
-            onClick={exchange(index, "letters")}/>
+           onClick={() => {exchange(index, "letters")}}
+           />
             </View> 
               )
            }) 

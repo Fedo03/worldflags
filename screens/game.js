@@ -1,79 +1,79 @@
 import React, 
        {useState,
         useEffect} from "react";
+
 import { SafeAreaView,
     Image,
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList
  } from "react-native";
 
  import {countries} from "../media/js/all"; 
 
 function Game(){
         
-    var [count, setCount] = useState([...countries[1]]);
+    const [count, setCount] = useState([...countries[5]]);
+    const [List,setList] = useState()
+    const [selectedId,setSelectedId] = useState()
+    
 
     var [answ, setAnsw] = useState([])
-   console.log(console.log);
+
     
   
   useEffect(()=> {
-    var oldarr = []
-    setAnsw([])
+    var incrementalList = [] 
+ 
     for(var i = 0 ; i < count.length; i++){
-       
-       oldarr.push("")
-      setAnsw(oldarr)
-      
+     incrementalList[i] = {
+      id: i,
+      letter : count[i]
+     }      
 
     }
 
+    setList(incrementalList)
+    console.log(List)
+           
   },[])
 
 
-useEffect(() => {
-    console.log(answ)
-},[answ])
 
-
-  function exchange (index, type) {
     
-    if (type == "letters") {
-   var oldarr = answ 
-    var oldcount = count
-   
-       oldarr[index] = count[index]
-       setAnsw(oldarr)
-       oldcount.splice(index,1)
-       setCount(oldcount)
-
-    }
 
 
-  }
+        const Item = ({txt,onPress})=>{
+         return(
 
-
-    function Letter(props){
-        return(
-            <TouchableOpacity onPress={props.onClick}>
-            <View style={{backgroundColor:"blue",
-               width : 10,
-                height: 20,
-                margin: 4}}>
-                <Text style={{color: "black"}}>  
-                    {props.letter}
+            <TouchableOpacity onPress={onPress}>
+              <View style={{margin: 10}}>
+                <Text style={{color: "black"}}>
+                  {txt}
                 </Text>
-                
-            </View>
+              </View>
             </TouchableOpacity>
         )
-    }
+        }
 
 
-    console.log(answ)
+        const renderItem = ({item})=>(
+         <Item txt={item.letter} onPress={()=>{
+          setSelectedId(item.id) 
+         console.log(selectedId)
+        
+        }}/>
+
+
+
+        )
+
+        
+
 
   
+
     return(
         <SafeAreaView>
             <View>
@@ -86,40 +86,17 @@ useEffect(() => {
             </View>
 
 
+            <View>
+              <FlatList
+               horizontal={true}
+               data={List}
+              renderItem={renderItem}
+              extraData={selectedId}
+              keyExtractor={item => item.id}
+              />
+            </View>
 
-            <View style={{flexDirection : "row"}} >
-          {
-            answ.map( (item, index) => {
-              console.log(index)
-       return  (
-            <View >
-            <Letter letter={item} />
-            
-            </View> 
-              )
-           }) 
-
-         }
-          </View>
-
-
-
-            <View style={{flexDirection : "row"}}>
-          {
-            count.map( (item, index) => {
-       return  (
-        <View>
-            <Letter letter={item}
-           onClick={() => {exchange(index, "letters")}}
-           />
-            </View> 
-              )
-           }) 
-
-         }
-          </View>
-
-          
+           
 
         </SafeAreaView>
     )

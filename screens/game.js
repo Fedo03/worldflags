@@ -19,7 +19,11 @@ function Game(){
     const [count, setCount] = useState([...countries[5]]);
     const [List,setList] = useState()
     const [selectedId,setSelectedId] = useState()
-    const [Answ, setAnsw] = useState([])
+    const [Answ, setAnsw] = useState([{
+      id: "start",
+      letter : "placeholder"
+
+    }])
     const [sAnsw, setSAnsw] = useState()
     const [i_a, setI_a] = useState(0)
     const [len, setLen] = useState(count.length)
@@ -33,8 +37,16 @@ function Game(){
     
     var incrementalList = [] 
     var blanks =[]
+    var order = []
+
+
+    
+      console.log(order)
  
     for(var i = 0 ; i < len; i++){
+
+    
+
      incrementalList[i] = {
       id: i,
       letter : count[i]
@@ -49,24 +61,34 @@ function Game(){
     
     setAnsw(blanks)
     setList(incrementalList)
-    console.log(List)
+    console.log(count)
+
            
   },[])
 
+  useEffect(()=> {
 
 
-        const Item = ({txt,onPress})=>{
-         return(
+   
+    console.log("correct")
 
-            <TouchableOpacity onPress={onPress}>
-              <View style={{margin: 10}}>
-                <Text style={{color: "black"}}>
-                  {txt}
-                </Text>
-              </View>
-            </TouchableOpacity>
-        )
+      
+    for(var i = 0 ; i < len; i++) {
+      if(Answ[i].letter == count[i]) {
+        if(i == len - 1) {
+          console.log("true name")
         }
+      } else {
+        break;
+      }
+
+  }
+
+  },)
+
+
+
+
 
 
         const renderItem = ({item})=>(
@@ -101,10 +123,26 @@ function Game(){
 
               console.log("overboard")
             } else {
+                 if(a_oldarr[i_a].letter){
 
+                  for(var t = 0; t < a_oldarr.length; t++ ){
+
+                    if(a_oldarr[t].letter == ""){
+    
+                      oldarr.splice(i,1)
+                      a_oldarr[t] = item
+                       console.log(t)
+                     break;
+                    }
+                  }
+    
+                  
+                  
+                 } else {
+                 
            oldarr.splice(i,1)
             a_oldarr[i_a] = item
-
+                 }
             }
             console.log(oldarr)
 
@@ -132,12 +170,13 @@ function Game(){
             if(item.letter){
 
               var newList = List
+              
 
               newList.push(item)
               setList(newList)
               newList = Answ
               for(var i = 0 ; i < newList.length; i++){
-                   if(newList[i].letter == item.letter){
+                   if(newList[i].id == item.id){
                     setI_a(i)
                     newList[i]= {
                       id : newList.length + i ,

@@ -8,16 +8,21 @@ import { SafeAreaView,
     Text,
     TouchableOpacity,
     FlatList,
-    StyleSheet
+    StyleSheet,
+    ScrollView
  } from "react-native";
 
  import {countries} from "../media/js/all"; 
  import Button from "../comps/button";
+ import RanList from "../fun/ran";
+ 
+ var ran = new RanList;
 
 function Game(){
         
-    const [count, setCount] = useState([...countries[5]]);
+    const [count, setCount] = useState([...countries[0].name]);
     const [List,setList] = useState()
+    const [num, setNum] = useState(0)
     const [selectedId,setSelectedId] = useState()
     const [Answ, setAnsw] = useState([{
       id: "start",
@@ -27,27 +32,24 @@ function Game(){
     const [sAnsw, setSAnsw] = useState()
     const [i_a, setI_a] = useState(0)
     const [len, setLen] = useState(count.length)
-    const [img, setImg] = useState(require("../media/worldFlags/Brazil.png"))
+    const [img, setImg] = useState(countries[0].path)
+    console.log(countries[num].path)
     
     
   
   useEffect(()=> {
     
    
-    
+    var order =  ran.random(count)
     var incrementalList = [] 
     var blanks =[]
-    var order = []
-
-
-    
-      console.log(order)
+   
  
     for(var i = 0 ; i < len; i++){
 
     
 
-     incrementalList[i] = {
+     incrementalList[order[i]] = {
       id: i,
       letter : count[i]
      } 
@@ -66,10 +68,13 @@ function Game(){
            
   },[])
 
+
+
+
   useEffect(()=> {
 
 
-   
+    
     console.log("correct")
 
       
@@ -77,6 +82,8 @@ function Game(){
       if(Answ[i].letter == count[i]) {
         if(i == len - 1) {
           console.log("true name")
+          setNum(num+1)
+          break
         }
       } else {
         break;
@@ -84,7 +91,7 @@ function Game(){
 
   }
 
-  },)
+  },[])
 
 
 
@@ -211,10 +218,12 @@ function Game(){
            style={{
             width:300,
             height:180
-           }} />
+           }} /> 
             </View>
-
+             
             <View>
+            <ScrollView horizontal={true}>
+             
               <FlatList 
               horizontal={true}
               data={Answ}
@@ -222,10 +231,12 @@ function Game(){
               keyExtractor={item => item.id}
               extraData={sAnsw}
               />
-            </View>
-
-
+              
+            </ScrollView>
+            </View> 
             <View>
+            <ScrollView horizontal={true}>
+            
               <FlatList
                horizontal={true}
                data={List}
@@ -233,6 +244,8 @@ function Game(){
               extraData={selectedId}
               keyExtractor={item => item.id}
               />
+            
+            </ScrollView>
             </View>
 
            

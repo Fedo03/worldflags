@@ -19,70 +19,84 @@ import { SafeAreaView,
  var ran = new RanList;
 
 function Game(){
+
+    const [num, setNum] = useState(0)
         
     const [count, setCount] = useState([...countries[0].name]);
-    const [List,setList] = useState()
-    const [num, setNum] = useState(0)
+    const [list,setList] = useState()
     const [selectedId,setSelectedId] = useState()
-    const [Answ, setAnsw] = useState([{
+    const [answ, setAnsw] = useState([{
       id: "start",
-      letter : "placeholder"
+      letter : " "
 
     }])
     const [sAnsw, setSAnsw] = useState()
     const [i_a, setI_a] = useState(0)
     const [len, setLen] = useState(count.length)
     const [img, setImg] = useState(countries[0].path)
-    console.log(countries[num].path)
+    
+
+
+
+    const update =  () => {
+      
+      var order =  ran.random(count)
+      var incrementalList = [] 
+      var blanks =[]
+     
+      //setLen(new_len)
+      console.log(count.length)
+   
+      for(var i = 0 ; i < count.length; i++){
+  
+       incrementalList[order[i]] = {
+        id: i,
+        letter : count[i]
+       } 
+       
+       blanks[i] = {
+        id: len + i,
+        letter: ""
+       }
+       console.log(i)
+  
+      }
+      
+      setAnsw([...blanks])
+      setList([...incrementalList])
+  
+  
+  
+      }
     
     
   
   useEffect(()=> {
+    update()
     
-   
-    var order =  ran.random(count)
-    var incrementalList = [] 
-    var blanks =[]
-   
- 
-    for(var i = 0 ; i < len; i++){
-
-    
-
-     incrementalList[order[i]] = {
-      id: i,
-      letter : count[i]
-     } 
-     
-     blanks[i] = {
-      id: len + i,
-      letter: ""
-     }
-
-    }
-    
-    setAnsw(blanks)
-    setList(incrementalList)
-    console.log(count)
-
            
-  },[])
+  },[num])
 
 
 
 
-  useEffect(()=> {
+  useEffect(()=> {  
 
-
-    
-    console.log("correct")
-
+   
       
-    for(var i = 0 ; i < len; i++) {
-      if(Answ[i].letter == count[i]) {
-        if(i == len - 1) {
+    for(var i = 0 ; i < count.length; i++) {
+
+      if(answ[i].letter == count[i]) {
+
+        if(i == count.length - 1) {
+
           console.log("true name")
-          setNum(num+1)
+       
+          setNum(num + 1 )
+          setCount([...countries[num].name])
+          setImg(countries[num].path)
+          
+
           break
         }
       } else {
@@ -91,7 +105,7 @@ function Game(){
 
   }
 
-  },[])
+  },[list])
 
 
 
@@ -105,16 +119,13 @@ function Game(){
          st={stl.txt}
          onPress={()=>{
         
-         // console.log(item.id)
-          var oldarr = List
-          var a_oldarr = Answ
+        
+          var oldarr = [...list]
+          var a_oldarr = [...answ]
           
           for(var i = 0; i < oldarr.length ; i++){
 
           if(item.id === oldarr[i].id){
-
-           //console.log(i_a)
-
             if(i_a > len - 1){
 
               for(var t = 0; t < a_oldarr.length; t++ ){
@@ -123,12 +134,12 @@ function Game(){
 
                   oldarr.splice(i,1)
                   a_oldarr[t] = item
-                   console.log(t)
+ 
                  break;
                 }
               }
 
-              console.log("overboard")
+     
             } else {
                  if(a_oldarr[i_a].letter){
 
@@ -138,7 +149,7 @@ function Game(){
     
                       oldarr.splice(i,1)
                       a_oldarr[t] = item
-                       console.log(t)
+
                      break;
                     }
                   }
@@ -151,7 +162,7 @@ function Game(){
             a_oldarr[i_a] = item
                  }
             }
-            console.log(oldarr)
+      
 
             setI_a(i_a + 1)
             
@@ -176,12 +187,12 @@ function Game(){
 
             if(item.letter){
 
-              var newList = List
+              var newList = list
               
 
               newList.push(item)
               setList(newList)
-              newList = Answ
+              newList = answ
               for(var i = 0 ; i < newList.length; i++){
                    if(newList[i].id == item.id){
                     setI_a(i)
@@ -192,9 +203,8 @@ function Game(){
                      
                    }
               }
-              setAnsw(Answ)
-              console.log(List)
-              console.log(Answ)
+              setAnsw(answ)
+
 
             } else {
               
@@ -226,7 +236,7 @@ function Game(){
              
               <FlatList 
               horizontal={true}
-              data={Answ}
+              data={answ}
               renderItem={render}
               keyExtractor={item => item.id}
               extraData={sAnsw}
@@ -239,7 +249,7 @@ function Game(){
             
               <FlatList
                horizontal={true}
-               data={List}
+               data={list}
               renderItem={renderItem}
               extraData={selectedId}
               keyExtractor={item => item.id}

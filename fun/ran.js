@@ -7,7 +7,7 @@ class RanList {
         for(var i = 0; i < list.length; i++){
           
           var rand = Math.floor(Math.random() * list.length);
-          console.log(order)
+        
           if(i == 0 ){
            order.push(rand)
           } else {
@@ -28,7 +28,7 @@ class RanList {
                 if(t == (order.length -1)){
                   order.push(rand)
                 }
-                console.log(order)
+              
                 t++
               }
             }

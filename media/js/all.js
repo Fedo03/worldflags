@@ -3,7 +3,7 @@ export const countries = [
   { name: "Albania", path: require("../worldFlags/Albania.png") },
   { name: "Algeria", path: require("../worldFlags/Algeria.png") },
   { name: "Andorra", path: require("../worldFlags/Andorra.png") },
-  { name: "Angola", path: require("../worldFlags/Angola.png") },
+ { name: "Angola", path: require("../worldFlags/Angola.png") },
   { name: "Anguilla", path: require("../worldFlags/Anguilla.png") },
   //{ name: "Antarctica", path: require("../worldFlags/Antarctica.png") },
   { name: "Antigua and Barbuda", path: require("../worldFlags/Antigua_and_Barbuda.png") },

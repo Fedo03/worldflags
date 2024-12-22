@@ -25,10 +25,12 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen
         name="Home"
-        component={Home} />
+        component={Home} 
+        options={{headerShown : false}}/>
         <Stack.Screen
         name='Game'
         component={Game}
+        options={{headerShown : false}}
         />
 
 

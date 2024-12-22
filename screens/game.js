@@ -9,7 +9,8 @@ import { SafeAreaView,
     TouchableOpacity,
     FlatList,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    Alert
  } from "react-native";
 
  import {countries} from "../media/js/all"; 
@@ -20,7 +21,7 @@ import { SafeAreaView,
 
 function Game(){
 
-    const [num, setNum] = useState(0)
+    const [num, setNum] = useState(1)
         
     const [count, setCount] = useState([...countries[0].name]);
     const [list,setList] = useState()
@@ -32,9 +33,8 @@ function Game(){
     }])
     const [sAnsw, setSAnsw] = useState()
     const [i_a, setI_a] = useState(0)
-    const [len, setLen] = useState(count.length)
     const [img, setImg] = useState(countries[0].path)
-    
+    const [alrt, setAlrt] = useState(0)
 
 
 
@@ -44,18 +44,19 @@ function Game(){
       var incrementalList = [] 
       var blanks =[]
      
-      //setLen(new_len)
-      console.log(count.length)
+  
+      console.log(count)
    
       for(var i = 0 ; i < count.length; i++){
-  
+        
        incrementalList[order[i]] = {
         id: i,
         letter : count[i]
        } 
-       
+      
+      
        blanks[i] = {
-        id: len + i,
+        id: count.length + i,
         letter: ""
        }
        console.log(i)
@@ -64,7 +65,8 @@ function Game(){
       
       setAnsw([...blanks])
       setList([...incrementalList])
-  
+      setI_a(0)
+   
   
   
       }
@@ -90,7 +92,8 @@ function Game(){
 
         if(i == count.length - 1) {
 
-          console.log("true name")
+          Alert.alert("CORRECT", countries[alrt].name)
+          setAlrt(alrt + 1)
        
           setNum(num + 1 )
           setCount([...countries[num].name])
@@ -113,6 +116,7 @@ function Game(){
 
 
         const renderItem = ({item})=>(
+          
          <Button 
          txt={item.letter} 
          sty={stl.lett}
@@ -126,7 +130,7 @@ function Game(){
           for(var i = 0; i < oldarr.length ; i++){
 
           if(item.id === oldarr[i].id){
-            if(i_a > len - 1){
+            if(i_a > count.length - 1){
 
               for(var t = 0; t < a_oldarr.length; t++ ){
 
@@ -141,6 +145,7 @@ function Game(){
 
      
             } else {
+              console.log(i_a)
                  if(a_oldarr[i_a].letter){
 
                   for(var t = 0; t < a_oldarr.length; t++ ){
@@ -153,6 +158,7 @@ function Game(){
                      break;
                     }
                   }
+                
     
                   
                   
@@ -172,11 +178,13 @@ function Game(){
 
           }
         }  }}/>
+      
       )
 
 
       const render = ({item})=> {
         return( 
+        
           <Button
           sty={ stl.butt}
          st={stl.txt}
@@ -208,8 +216,8 @@ function Game(){
 
             } else {
               
-              for(var i = 0; i < len; i++) {
-                if(item.id == len + i){
+              for(var i = 0; i < count.length; i++) {
+                if(item.id == count.length + i){
                   setI_a(i)
                 }
               }
@@ -217,22 +225,34 @@ function Game(){
 
           }}
           />
+    
         )
       }
 
     return(
         <SafeAreaView>
-            <View>
+          <View style={{marginLeft: 5}}>
+            <Text style={{
+              color: "black",
+              fontWeight: "bold",
+              fontSize: 20,
+
+            }}>
+              {num}
+            </Text>
+          </View>
+            <View style={stl.container}>
            <Image
            source={img}
            style={{
-            width:300,
-            height:180
+            width: 350,
+            height:200
            }} /> 
             </View>
              
-            <View>
-            <ScrollView horizontal={true}>
+            <View style={stl.bbt}>
+              
+           
              
               <FlatList 
               horizontal={true}
@@ -240,12 +260,13 @@ function Game(){
               renderItem={render}
               keyExtractor={item => item.id}
               extraData={sAnsw}
+              
               />
               
-            </ScrollView>
+            
             </View> 
-            <View>
-            <ScrollView horizontal={true}>
+            <View style={stl.bbt}>
+            
             
               <FlatList
                horizontal={true}
@@ -253,9 +274,10 @@ function Game(){
               renderItem={renderItem}
               extraData={selectedId}
               keyExtractor={item => item.id}
+  
               />
             
-            </ScrollView>
+       
             </View>
 
            
@@ -290,7 +312,17 @@ const stl = StyleSheet.create({
     height: 30
 
 
+  },
+  container :{
+    width : "auto",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: "8%"
+  },
+  bbt : {
+    marginTop : 10
   }
+ 
 })
 
 

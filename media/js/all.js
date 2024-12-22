@@ -1,5 +1,5 @@
 export const countries = [
-  { name: "Afghanistan", path: require("../worldFlags/Afghanistan.png") },
+  //{ name: "Afghanistan", path: require("../worldFlags/Afghanistan.png") },
   { name: "Albania", path: require("../worldFlags/Albania.png") },
   { name: "Algeria", path: require("../worldFlags/Algeria.png") },
   { name: "Andorra", path: require("../worldFlags/Andorra.png") },

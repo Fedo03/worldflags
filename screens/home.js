@@ -3,7 +3,9 @@ import {
     SafeAreaView,
     TouchableOpacity,
     View,
-    Text
+    Text,
+    StyleSheet,
+    Dimensions
 } from "react-native"
 
 
@@ -17,8 +19,8 @@ const Home = ({navigation}) => {
     function Button() {
         return(
             <TouchableOpacity onPress={nav}>
-                <View>
-                    <Text>
+                <View style={stl.container}>
+                    <Text style={stl.txt}>
                         Play
                     </Text>
                 </View>
@@ -30,10 +32,35 @@ const Home = ({navigation}) => {
 
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={stl.body}>
            <Button />
         </SafeAreaView>
     )
 }
+
+
+const stl = StyleSheet.create(
+    {
+        container :{
+            alignSelf: "center",
+            justifyContent: "center",
+            backgroundColor: "blue",
+            width: 100,
+            borderRadius: 10,
+           top: Dimensions.get("screen").height/2
+
+        },
+        txt : {
+            color: "black",
+            fontSize: 40  ,
+            alignSelf: "center",  
+        },
+        body : {
+ 
+           
+        }
+
+    }
+)
 
 export default Home;
